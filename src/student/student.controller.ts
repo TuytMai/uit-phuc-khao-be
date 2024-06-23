@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { StudentService } from './student.service';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import { StudentService } from './student.service';
 
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
+  async create(@Body() createStudentDto: CreateStudentDto) {
+    createStudentDto.password = await bcrypt.hash(createStudentDto.password, 0);
     return this.studentService.create(createStudentDto);
   }
 
@@ -22,13 +23,13 @@ export class StudentController {
     return this.studentService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.update(+id, updateStudentDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+  //   return this.studentService.update(+id, updateStudentDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.studentService.remove(+id);
+    return this.studentService.remove(id);
   }
 }

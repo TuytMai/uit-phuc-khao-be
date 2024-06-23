@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateStudentDto } from './dto/create-student.dto';
 import { StudentEntity } from './entities/student.entity';
 
 @Injectable()
@@ -26,11 +25,23 @@ export class StudentService {
     });
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  findByMssv(mssv: string) {
+    return this.studentRepo.findOneBy({
+      mssv: mssv,
+    });
   }
 
-  remove(id: number) {
+  findById(id: string) {
+    return this.studentRepo.findOneBy({
+      id,
+    });
+  }
+
+  // update(id: number, updateStudentDto: UpdateStudentDto) {
+  //   return `This action updates a #${id} student`;
+  // }
+
+  remove(id: string) {
     return `This action removes a #${id} student`;
   }
 }
