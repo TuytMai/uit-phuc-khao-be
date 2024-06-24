@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ReviewBoardService } from 'src/review-board/review-board.service';
+import { LecturerService } from 'src/lecturer/lecturer.service';
 
 @Injectable()
-export class JwtReviewBoardStrategy extends PassportStrategy(
+export class JwtLecturerStrategy extends PassportStrategy(
   Strategy,
-  'jwt-administrator',
+  'jwt-lecturer',
 ) {
   constructor(
     configService: ConfigService,
-    private readonly reviewBoardService: ReviewBoardService,
+    private readonly lecturerService: LecturerService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,7 +21,7 @@ export class JwtReviewBoardStrategy extends PassportStrategy(
   }
 
   async validate(payload: { sub: string; id: string }) {
-    const user = await this.reviewBoardService.findOne(payload.id);
+    const user = await this.lecturerService.findOne(payload.id);
 
     return { ...user };
   }
