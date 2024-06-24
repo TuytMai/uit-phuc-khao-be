@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateLecturerDto } from './dto/create-lecturer.dto';
 import { UpdateLecturerDto } from './dto/update-lecturer.dto';
-import { Repository } from 'typeorm';
 import { LecturerEntity } from './entities/lecturer.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class LecturerService {
@@ -25,9 +25,12 @@ export class LecturerService {
       where: {
         id: id,
       },
-      order: {
-        hoTen: 'ASC',
-      },
+    });
+  }
+
+  findByUsername(username: string) {
+    return this.lecturerRepo.findOneBy({
+      username,
     });
   }
 

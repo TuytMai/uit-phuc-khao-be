@@ -9,9 +9,10 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  generateToken(id: string) {
+  generateToken(id: string, data: any) {
     const access_token = this.jwtService.sign(
       {
+        ...data,
         id,
         sub: id,
       },

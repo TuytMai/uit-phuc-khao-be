@@ -3,18 +3,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AdministratorsModule } from 'src/administrators/administrators.module';
-import { ReviewBoardModule } from 'src/review-board/review-board.module';
+import { LecturerModule } from 'src/lecturer/lecturer.module';
 import { TrainningDepartmentModule } from 'src/trainning-department/trainning-department.module';
 import { StudentModule } from '../student/student.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtAdministratorStrategy } from './strategies/jwt-administrator.strategy';
+import { JwtLecturerStrategy } from './strategies/jwt-lecturer.strategy';
 import { JwtStudentStrategy } from './strategies/jwt-student.strategy';
+import { JwtTrainingDepartmentStrategy } from './strategies/jwt-training-department.strategy';
 
 @Module({
   imports: [
     StudentModule,
     AdministratorsModule,
-    ReviewBoardModule,
+    LecturerModule,
     TrainningDepartmentModule,
     PassportModule,
     JwtModule.registerAsync({
@@ -26,7 +29,13 @@ import { JwtStudentStrategy } from './strategies/jwt-student.strategy';
     }),
     ConfigModule,
   ],
-  providers: [AuthService, JwtStudentStrategy],
+  providers: [
+    AuthService,
+    JwtStudentStrategy,
+    JwtAdministratorStrategy,
+    JwtLecturerStrategy,
+    JwtTrainingDepartmentStrategy,
+  ],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateAdministratorDto } from './dto/create-administrator.dto';
 import { UpdateAdministratorDto } from './dto/update-administrator.dto';
-import { Repository } from 'typeorm';
 import { AdministratorEntity } from './entities/administrator.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AdministratorsService {
@@ -23,6 +23,12 @@ export class AdministratorsService {
   findOne(id: string) {
     return this.administratorRepo.findOneBy({
       id: id,
+    });
+  }
+
+  findByUsername(username: string) {
+    return this.administratorRepo.findOneBy({
+      username,
     });
   }
 

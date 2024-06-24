@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReviewBoardDto } from './dto/create-review-board.dto';
-import { UpdateReviewBoardDto } from './dto/update-review-board.dto';
-import { Repository } from 'typeorm';
-import { ReviewBoardEntity } from './entities/review-board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LecturerService } from 'src/lecturer/lecturer.service';
+import { Repository } from 'typeorm';
+import { CreateReviewBoardDto } from './dto/create-review-board.dto';
+import { UpdateReviewBoardDto } from './dto/update-review-board.dto';
+import { ReviewBoardEntity } from './entities/review-board.entity';
 
 @Injectable()
 export class ReviewBoardService {

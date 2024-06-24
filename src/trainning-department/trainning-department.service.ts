@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTrainningDepartmentDto } from './dto/create-trainning-department.dto';
-import { UpdateTrainningDepartmentDto } from './dto/update-trainning-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateTrainningDepartmentDto } from './dto/create-trainning-department.dto';
+import { UpdateTrainningDepartmentDto } from './dto/update-trainning-department.dto';
 import { TrainningDepartmentEntity } from './entities/trainning-department.entity';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class TrainningDepartmentService {
   ) {}
 
   create(createTrainningDepartmentDto: CreateTrainningDepartmentDto) {
-    return this.trainingDepartemntRepo.save(createTrainningDepartmentDto)
+    return this.trainingDepartemntRepo.save(createTrainningDepartmentDto);
   }
 
   findAll() {
@@ -22,8 +22,14 @@ export class TrainningDepartmentService {
 
   findOne(id: string) {
     return this.trainingDepartemntRepo.findOneBy({
-      id: id
-    })
+      id: id,
+    });
+  }
+
+  findByUsername(username: string) {
+    return this.trainingDepartemntRepo.findOneBy({
+      username,
+    });
   }
 
   update(
