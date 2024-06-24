@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { StudentService } from 'src/student/student.service';
+import { AdministratorsService } from 'src/administrators/administrators.service';
 
 @Injectable()
-export class JwtStudentStrategy extends PassportStrategy(
+export class JwtAdministratorStrategy extends PassportStrategy(
   Strategy,
-  'jwt-student',
+  'jwt-administrator',
 ) {
   constructor(
     configService: ConfigService,
-    private readonly studentService: StudentService,
+    private readonly administratorsService: AdministratorsService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,7 +21,7 @@ export class JwtStudentStrategy extends PassportStrategy(
   }
 
   async validate(payload: { sub: string; id: string }) {
-    const user = await this.studentService.findById(payload.id);
+    const user = await this.administratorsService.findOne(payload.id);
 
     return { ...user };
   }

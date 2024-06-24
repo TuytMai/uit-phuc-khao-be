@@ -23,7 +23,7 @@ export class AdministratorsService {
   findOne(id: string) {
     return this.administratorRepo.findOneBy({
       id: id,
-    })
+    });
   }
 
   update(id: number, updateAdministratorDto: UpdateAdministratorDto) {
