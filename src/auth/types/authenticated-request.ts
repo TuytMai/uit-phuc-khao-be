@@ -1,3 +1,5 @@
 export type AuthenticatedRequest = {
-  id: string;
+  user: {
+    id: string;
+  };
 } & Request;
