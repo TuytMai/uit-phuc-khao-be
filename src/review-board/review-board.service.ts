@@ -38,7 +38,7 @@ export class ReviewBoardService {
   }
 
   update(id: number, updateReviewBoardDto: UpdateReviewBoardDto) {
-    return `This action updates a #${id} reviewBoard`;
+    return `This action update a #${id} reviewBoard`;
   }
 
   remove(id: number) {

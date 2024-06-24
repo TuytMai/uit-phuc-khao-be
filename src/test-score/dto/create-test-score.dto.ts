@@ -4,5 +4,4 @@ export class CreateTestScoreDto {
   lop: string;
   khoaQuanLy: string;
   diemHienTai: number;
-  studentId: string;
 }
