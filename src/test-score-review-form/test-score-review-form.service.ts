@@ -16,6 +16,14 @@ export class TestScoreReviewFormService {
     return this.testScoreReviewFormRepo.save(createTestScoreReviewFormDto);
   }
 
+  findStudentForm(studentId: string) {
+    return this.testScoreReviewFormRepo.findBy({
+      student: {
+        id: studentId,
+      },
+    });
+  }
+
   findAll() {
     return `This action returns all testScoreReviewForm`;
   }
