@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTestScoreReviewFormDto } from './dto/create-test-score-review-form.dto';
 import { UpdateTestScoreReviewFormDto } from './dto/update-test-score-review-form.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TestScoreReviewFormEntity } from './entities/test-score-review-form.entity';
 
@@ -17,9 +17,47 @@ export class TestScoreReviewFormService {
   }
 
   findStudentForm(studentId: string) {
-    return this.testScoreReviewFormRepo.findBy({
-      student: {
-        id: studentId,
+    return this.testScoreReviewFormRepo.find({
+      where: {
+        student: {
+          id: studentId,
+        },
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+  }
+
+  findUnresolvedForm() {
+    return this.testScoreReviewFormRepo.find({
+      where: {
+        tinhTrang: 'DA_GUI',
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+  }
+
+  findResolvingForm() {
+    return this.testScoreReviewFormRepo.find({
+      where: {
+        tinhTrang: 'DANG_XU_LI',
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+  }
+
+  findResolvedForm() {
+    return this.testScoreReviewFormRepo.find({
+      where: {
+        tinhTrang: In(['TU_CHOI', 'DA_XU_LI']),
+      },
+      order: {
+        ngayDangKy: 'ASC',
       },
     });
   }
@@ -34,11 +72,17 @@ export class TestScoreReviewFormService {
     });
   }
 
-  update(
-    id: number,
+  async update(
+    id: string,
     updateTestScoreReviewFormDto: UpdateTestScoreReviewFormDto,
   ) {
-    return `This action updates a #${id} testScoreReviewForm`;
+    const testScoreReviewForm = await this.testScoreReviewFormRepo.findOneBy({
+      id,
+    });
+
+    Object.assign(testScoreReviewForm, updateTestScoreReviewFormDto);
+
+    return this.testScoreReviewFormRepo.save(testScoreReviewForm);
   }
 
   remove(id: number) {

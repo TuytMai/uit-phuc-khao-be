@@ -3,6 +3,7 @@ import { TestScoreEntity } from 'src/test-score/entities/test-score.entity';
 import { TrainningDepartmentEntity } from 'src/trainning-department/entities/trainning-department.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToOne,
@@ -35,7 +36,7 @@ export class TestScoreReviewFormEntity {
   @Column({ type: 'varchar', nullable: true })
   lyDoTuChoi: string;
 
-  @Column({ type: 'timestamp', nullable: false })
+  @CreateDateColumn()
   ngayDangKy: Date;
 
   @Column({ type: 'varchar', nullable: false })

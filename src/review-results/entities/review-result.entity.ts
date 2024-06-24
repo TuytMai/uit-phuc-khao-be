@@ -1,6 +1,6 @@
 import { ReviewBoardEntity } from "src/review-board/entities/review-board.entity";
 import { TestScoreReviewFormEntity } from "src/test-score-review-form/entities/test-score-review-form.entity";
-import { Column, Entity, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ket_qua_phuc_khao' })
 export class ReviewResultEntity {
@@ -18,4 +18,7 @@ export class ReviewResultEntity {
 
   @ManyToOne(() => ReviewBoardEntity)
   reviewBoard: ReviewBoardEntity;
+
+  @CreateDateColumn()
+  ngay: Date;
 }

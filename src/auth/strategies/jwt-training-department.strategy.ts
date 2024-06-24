@@ -7,7 +7,7 @@ import { TrainningDepartmentService } from 'src/trainning-department/trainning-d
 @Injectable()
 export class JwtTrainingDepartmentStrategy extends PassportStrategy(
   Strategy,
-  'jwt-administrator',
+  'jwt-training-department',
 ) {
   constructor(
     configService: ConfigService,

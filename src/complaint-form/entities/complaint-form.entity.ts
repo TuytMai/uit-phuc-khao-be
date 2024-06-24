@@ -2,6 +2,7 @@ import { StudentEntity } from 'src/student/entities/student.entity';
 import { TestScoreEntity } from 'src/test-score/entities/test-score.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToOne,
@@ -15,6 +16,9 @@ export class ComplaintFormEntity {
 
   @Column({ type: 'varchar', nullable: false })
   lyDo: string;
+
+  @CreateDateColumn()
+  ngayDangKy: Date;
 
   @Column({ type: 'varchar', nullable: true })
   lyDoTuChoi: string;

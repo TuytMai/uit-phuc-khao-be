@@ -14,6 +14,7 @@ import { CreateTestScoreReviewFormDto } from './dto/create-test-score-review-for
 import { UpdateTestScoreReviewFormDto } from './dto/update-test-score-review-form.dto';
 import { JwtStudentAuthGuard } from 'src/auth/guards/jwt-student-auth.guard';
 import { AuthenticatedStudentRequest } from 'src/auth/types/authenticated-student-request';
+import { JwtTrainingDepartmentAuthGuard } from 'src/auth/guards/jwt-training-department-auth.guard';
 
 @Controller('test-score-review-form')
 export class TestScoreReviewFormController {
@@ -31,7 +32,13 @@ export class TestScoreReviewFormController {
     return this.testScoreReviewFormService.findAll();
   }
 
-  @Get()
+  @Get('unresolved')
+  @UseGuards(JwtTrainingDepartmentAuthGuard)
+  findUnreolvedForm() {
+    return this.testScoreReviewFormService.findUnresolvedForm();
+  }
+
+  @Get('student')
   @UseGuards(JwtStudentAuthGuard)
   async findStudentForm(@Request() request: AuthenticatedStudentRequest) {
     const student = request.user;
@@ -39,6 +46,18 @@ export class TestScoreReviewFormController {
       student.id,
     );
     return forms;
+  }
+
+  @Get('resolving')
+  @UseGuards(JwtTrainingDepartmentAuthGuard)
+  findResolvingForm() {
+    return this.testScoreReviewFormService.findResolvingForm();
+  }
+
+  @Get('resolved')
+  @UseGuards(JwtTrainingDepartmentAuthGuard)
+  findResolvedForm() {
+    return this.testScoreReviewFormService.findResolvedForm();
   }
 
   @Get(':id')
@@ -52,7 +71,7 @@ export class TestScoreReviewFormController {
     @Body() updateTestScoreReviewFormDto: UpdateTestScoreReviewFormDto,
   ) {
     return this.testScoreReviewFormService.update(
-      +id,
+      id,
       updateTestScoreReviewFormDto,
     );
   }
