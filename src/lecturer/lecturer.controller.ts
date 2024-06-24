@@ -1,22 +1,27 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { LecturerService } from './lecturer.service';
+import * as bcrypt from 'bcrypt';
 import { CreateLecturerDto } from './dto/create-lecturer.dto';
 import { UpdateLecturerDto } from './dto/update-lecturer.dto';
+import { LecturerService } from './lecturer.service';
 
 @Controller('lecturer')
 export class LecturerController {
   constructor(private readonly lecturerService: LecturerService) {}
 
   @Post()
-  create(@Body() createLecturerDto: CreateLecturerDto) {
+  async create(@Body() createLecturerDto: CreateLecturerDto) {
+    createLecturerDto.password = await bcrypt.hash(
+      createLecturerDto.password,
+      0,
+    );
     return this.lecturerService.create(createLecturerDto);
   }
 

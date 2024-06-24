@@ -1,14 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TrainningDepartmentService } from './trainning-department.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { CreateTrainningDepartmentDto } from './dto/create-trainning-department.dto';
 import { UpdateTrainningDepartmentDto } from './dto/update-trainning-department.dto';
+import { TrainningDepartmentService } from './trainning-department.service';
 
 @Controller('trainning-department')
 export class TrainningDepartmentController {
-  constructor(private readonly trainningDepartmentService: TrainningDepartmentService) {}
+  constructor(
+    private readonly trainningDepartmentService: TrainningDepartmentService,
+  ) {}
 
   @Post()
-  create(@Body() createTrainningDepartmentDto: CreateTrainningDepartmentDto) {
+  async create(
+    @Body() createTrainningDepartmentDto: CreateTrainningDepartmentDto,
+  ) {
+    createTrainningDepartmentDto.password = await bcrypt.hash(
+      createTrainningDepartmentDto.password,
+      0,
+    );
     return this.trainningDepartmentService.create(createTrainningDepartmentDto);
   }
 
@@ -23,8 +40,14 @@ export class TrainningDepartmentController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTrainningDepartmentDto: UpdateTrainningDepartmentDto) {
-    return this.trainningDepartmentService.update(+id, updateTrainningDepartmentDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateTrainningDepartmentDto: UpdateTrainningDepartmentDto,
+  ) {
+    return this.trainningDepartmentService.update(
+      +id,
+      updateTrainningDepartmentDto,
+    );
   }
 
   @Delete(':id')

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { AdministratorsService } from './administrators.service';
 import { CreateAdministratorDto } from './dto/create-administrator.dto';
 import { UpdateAdministratorDto } from './dto/update-administrator.dto';
@@ -8,7 +17,11 @@ export class AdministratorsController {
   constructor(private readonly administratorsService: AdministratorsService) {}
 
   @Post()
-  create(@Body() createAdministratorDto: CreateAdministratorDto) {
+  async create(@Body() createAdministratorDto: CreateAdministratorDto) {
+    createAdministratorDto.password = await bcrypt.hash(
+      createAdministratorDto.password,
+      0,
+    );
     return this.administratorsService.create(createAdministratorDto);
   }
 
@@ -23,7 +36,10 @@ export class AdministratorsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdministratorDto: UpdateAdministratorDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAdministratorDto: UpdateAdministratorDto,
+  ) {
     return this.administratorsService.update(+id, updateAdministratorDto);
   }
 
