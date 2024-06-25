@@ -50,6 +50,10 @@ export class TestScoreReviewFormService {
       where: {
         tinhTrang: 'DA_GUI',
       },
+      relations: {
+        testScore: true,
+        student: true,
+      },
       order: {
         ngayDangKy: 'ASC',
       },
@@ -61,6 +65,10 @@ export class TestScoreReviewFormService {
       where: {
         tinhTrang: 'DANG_XU_LI',
       },
+      relations: {
+        testScore: true,
+        student: true,
+      },
       order: {
         ngayDangKy: 'ASC',
       },
@@ -71,6 +79,10 @@ export class TestScoreReviewFormService {
     return this.testScoreReviewFormRepo.find({
       where: {
         tinhTrang: In(['TU_CHOI', 'DA_XU_LI']),
+      },
+      relations: {
+        testScore: true,
+        student: true,
       },
       order: {
         ngayDangKy: 'ASC',

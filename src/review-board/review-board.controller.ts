@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAdministratorAuthGuard } from 'src/auth/guards/jwt-administrator-auth.guard';
 import { AddLecturerRequest } from './dto/add-lecturer-request.dto';
 import { CreateReviewBoardDto } from './dto/create-review-board.dto';
 import { UpdateReviewBoardDto } from './dto/update-review-board.dto';
@@ -17,6 +19,7 @@ export class ReviewBoardController {
   constructor(private readonly reviewBoardService: ReviewBoardService) {}
 
   @Post()
+  @UseGuards(JwtAdministratorAuthGuard)
   create(@Body() createReviewBoardDto: CreateReviewBoardDto) {
     return this.reviewBoardService.create(createReviewBoardDto);
   }

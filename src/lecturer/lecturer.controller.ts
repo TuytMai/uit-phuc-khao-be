@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateLecturerDto } from './dto/create-lecturer.dto';
@@ -26,8 +27,8 @@ export class LecturerController {
   }
 
   @Get()
-  findAll() {
-    return this.lecturerService.findAll();
+  findAll(@Query('name') name: string) {
+    return this.lecturerService.findAll(name);
   }
 
   @Get(':id')

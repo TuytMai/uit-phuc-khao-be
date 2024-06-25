@@ -34,7 +34,9 @@ export class AuthController {
 
   @Post('administrator/login')
   async administratorLogin(@Body() authDto: AuthCredentialDto) {
-    const user = await this.administratorsService.findOne(authDto.username);
+    const user = await this.administratorsService.findByUsername(
+      authDto.username,
+    );
 
     if (await bcrypt.compare(authDto.password, user.password)) {
       return {

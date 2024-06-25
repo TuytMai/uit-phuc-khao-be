@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateLecturerDto } from './dto/create-lecturer.dto';
 import { UpdateLecturerDto } from './dto/update-lecturer.dto';
 import { LecturerEntity } from './entities/lecturer.entity';
@@ -16,8 +16,10 @@ export class LecturerService {
     return this.lecturerRepo.save(createLecturerDto);
   }
 
-  findAll() {
-    return `This action returns all lecturer`;
+  findAll(name: string) {
+    return this.lecturerRepo.find({
+      where: { hoTen: ILike(`%${name || ''}%`) },
+    });
   }
 
   findOne(id: string) {
