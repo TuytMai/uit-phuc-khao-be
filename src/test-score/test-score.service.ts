@@ -20,7 +20,7 @@ export class TestScoreService {
   }
 
   findAll() {
-    return `This action returns all testScore`;
+    return this.testScoreRepo.findBy({});
   }
 
   findOne(id: string) {

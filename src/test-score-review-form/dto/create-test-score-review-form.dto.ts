@@ -1,4 +1,4 @@
-import { EReviewStatus } from "../entities/test-score-review-form.entity";
+import { EReviewStatus } from '../entities/test-score-review-form.entity';
 
 export class CreateTestScoreReviewFormDto {
   maLop: string;
@@ -10,7 +10,6 @@ export class CreateTestScoreReviewFormDto {
   ngayDangKy: Date;
   nguoiPhucKhao: string;
   tinhTrang: EReviewStatus;
-  studentId: string;
   testScoreId: string;
   trainningDepartmentId: string;
 }

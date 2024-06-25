@@ -12,8 +12,20 @@ export class TestScoreReviewFormService {
     private readonly testScoreReviewFormRepo: Repository<TestScoreReviewFormEntity>,
   ) {}
 
-  create(createTestScoreReviewFormDto: CreateTestScoreReviewFormDto) {
-    return this.testScoreReviewFormRepo.save(createTestScoreReviewFormDto);
+  create(
+    createTestScoreReviewFormDto: CreateTestScoreReviewFormDto,
+    studentId: string,
+  ) {
+    return this.testScoreReviewFormRepo.save({
+      ...createTestScoreReviewFormDto,
+      tinhTrang: 'DA_GUI',
+      student: {
+        id: studentId,
+      },
+      testScore: {
+        id: createTestScoreReviewFormDto.testScoreId,
+      },
+    });
   }
 
   findStudentForm(studentId: string) {
