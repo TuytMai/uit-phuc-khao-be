@@ -6,9 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAdministratorAuthGuard } from 'src/auth/guards/jwt-administrator-auth.guard';
+import { JwtLecturerAuthGuard } from 'src/auth/guards/jwt-lecturer-auth.guard';
+import { AuthenticatedLecturerRequest } from 'src/auth/types/authenticated-lecturer-request';
 import { AddLecturerRequest } from './dto/add-lecturer-request.dto';
 import { CreateReviewBoardDto } from './dto/create-review-board.dto';
 import { UpdateReviewBoardDto } from './dto/update-review-board.dto';
@@ -35,6 +38,12 @@ export class ReviewBoardController {
   @Get()
   findAll() {
     return this.reviewBoardService.findAll();
+  }
+
+  @Get('lecturer')
+  @UseGuards(JwtLecturerAuthGuard)
+  findByLecturer(@Request() request: AuthenticatedLecturerRequest) {
+    return this.reviewBoardService.findByLecturer(request.user.id);
   }
 
   @Get(':id')

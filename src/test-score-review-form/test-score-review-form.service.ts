@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { CreateTestScoreReviewFormDto } from './dto/create-test-score-review-form.dto';
 import { UpdateTestScoreReviewFormDto } from './dto/update-test-score-review-form.dto';
-import { In, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TestScoreReviewFormEntity } from './entities/test-score-review-form.entity';
 
 @Injectable()
@@ -28,7 +28,45 @@ export class TestScoreReviewFormService {
     });
   }
 
-  findStudentForm(studentId: string) {
+  async findLecturerForm(lecturerId: string) {
+    const unresolved = await this.testScoreReviewFormRepo.find({
+      where: {
+        reviewResult: {
+          reviewBoard: {
+            lecturers: { id: lecturerId },
+          },
+        },
+        tinhTrang: 'DANG_XU_LI',
+      },
+      relations: {
+        testScore: true,
+        student: true,
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+    const rest = await this.testScoreReviewFormRepo.find({
+      where: {
+        reviewResult: {
+          reviewBoard: {
+            lecturers: { id: lecturerId },
+          },
+        },
+        tinhTrang: Not('DANG_XU_LI'),
+      },
+      relations: {
+        testScore: true,
+        student: true,
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+    return [...unresolved, ...rest];
+  }
+
+  async findStudentForm(studentId: string) {
     return this.testScoreReviewFormRepo.find({
       where: {
         student: {

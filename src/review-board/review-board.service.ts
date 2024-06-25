@@ -38,6 +38,21 @@ export class ReviewBoardService {
     });
   }
 
+  findByLecturer(lecturerId: string) {
+    return this.reviewBoardRepo.find({
+      where: { lecturers: { id: lecturerId } },
+      relations: {
+        lecturers: true,
+        reviewResults: {
+          testScoreReviewForm: {
+            student: true,
+            testScore: true,
+          },
+        },
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.reviewBoardRepo.findOne({
       where: {

@@ -16,6 +16,8 @@ import { UpdateTestScoreReviewFormDto } from './dto/update-test-score-review-for
 import { JwtStudentAuthGuard } from 'src/auth/guards/jwt-student-auth.guard';
 import { AuthenticatedStudentRequest } from 'src/auth/types/authenticated-student-request';
 import { JwtTrainingDepartmentAuthGuard } from 'src/auth/guards/jwt-training-department-auth.guard';
+import { JwtLecturerAuthGuard } from 'src/auth/guards/jwt-lecturer-auth.guard';
+import { AuthenticatedLecturerRequest } from 'src/auth/types/authenticated-lecturer-request';
 
 @Controller('test-score-review-form')
 export class TestScoreReviewFormController {
@@ -52,6 +54,16 @@ export class TestScoreReviewFormController {
     const student = request.user;
     const forms = await this.testScoreReviewFormService.findStudentForm(
       student.id,
+    );
+    return forms;
+  }
+
+  @Get('lecturer')
+  @UseGuards(JwtLecturerAuthGuard)
+  async findByLecturer(@Request() request: AuthenticatedLecturerRequest) {
+    const lecturer = request.user;
+    const forms = await this.testScoreReviewFormService.findLecturerForm(
+      lecturer.id,
     );
     return forms;
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { CreateComplaintFormDto } from './dto/create-complaint-form.dto';
 import { UpdateComplaintFormDto } from './dto/update-complaint-form.dto';
 import { ComplaintFormEntity } from './entities/complaint-form.entity';
@@ -23,8 +23,38 @@ export class ComplaintFormService {
     });
   }
 
-  findAll() {
-    return `This action returns all complaintForm`;
+  async findAll() {
+    const unresolved = await this.complaintFormRepo.find({
+      where: {
+        tinhTrang: 'DA_GUI',
+      },
+      relations: {
+        reviewForm: {
+          testScore: true,
+          student: true,
+        },
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+
+    const rest = await this.complaintFormRepo.find({
+      where: {
+        tinhTrang: Not('DA_GUI'),
+      },
+      relations: {
+        reviewForm: {
+          testScore: true,
+          student: true,
+        },
+      },
+      order: {
+        ngayDangKy: 'ASC',
+      },
+    });
+
+    return [...unresolved, ...rest];
   }
 
   findStudent(studentId: string) {
@@ -51,6 +81,12 @@ export class ComplaintFormService {
     return this.complaintFormRepo.find({
       where: {
         tinhTrang: 'DA_GUI',
+      },
+      relations: {
+        reviewForm: {
+          testScore: true,
+          student: true,
+        },
       },
       order: {
         ngayDangKy: 'ASC',
