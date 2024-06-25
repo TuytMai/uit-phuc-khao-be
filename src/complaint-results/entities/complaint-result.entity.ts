@@ -1,6 +1,6 @@
 import { AdministratorEntity } from "src/administrators/entities/administrator.entity";
 import { ComplaintFormEntity } from "src/complaint-form/entities/complaint-form.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'ket_qua_khieu_nai' })
 export class ComplaintResultEntity {
@@ -16,6 +16,6 @@ export class ComplaintResultEntity {
   @ManyToOne(() => AdministratorEntity)
   administrator: AdministratorEntity;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   ngayDangKy: Date;
 }

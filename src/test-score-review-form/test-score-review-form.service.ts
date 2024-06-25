@@ -85,6 +85,17 @@ export class TestScoreReviewFormService {
     return this.testScoreReviewFormRepo.save(testScoreReviewForm);
   }
 
+  async findByReviewBoard(reviewBoardId: string) {
+    const results = await this.testScoreReviewFormRepo.find({
+      where: {
+        reviewResult: {
+          reviewBoard: { id: reviewBoardId },
+        },
+      },
+    });
+    return results;
+  }
+
   remove(id: number) {
     return `This action removes a #${id} testScoreReviewForm`;
   }

@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { TestScoreReviewFormService } from './test-score-review-form.service';
 import { CreateTestScoreReviewFormDto } from './dto/create-test-score-review-form.dto';
@@ -58,6 +59,11 @@ export class TestScoreReviewFormController {
   @UseGuards(JwtTrainingDepartmentAuthGuard)
   findResolvedForm() {
     return this.testScoreReviewFormService.findResolvedForm();
+  }
+
+  @Get('review-board')
+  findByReviewBoard(@Query('id') id: string) {
+    return this.testScoreReviewFormService.findByReviewBoard(id);
   }
 
   @Get(':id')

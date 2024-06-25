@@ -68,7 +68,7 @@ export class ComplaintFormController {
     @Param('id') id: string,
     @Body() updateComplaintFormDto: UpdateComplaintFormDto,
   ) {
-    return this.complaintFormService.update(+id, updateComplaintFormDto);
+    return this.complaintFormService.update(id, updateComplaintFormDto);
   }
 
   @Delete(':id')

@@ -32,9 +32,27 @@ export class ReviewBoardService {
   }
 
   findOne(id: string) {
-    return this.reviewBoardRepo.findOneBy({
-      id: id,
+    return this.reviewBoardRepo.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        lecturers: true,
+      },
     });
+  }
+
+  async addLecturer(reviewBoardId: string, lecturerId: string) {
+    const reviewBoard = await this.reviewBoardRepo.findOne({
+      where: { id: reviewBoardId },
+      relations: { lecturers: true },
+    });
+
+    const lecturer = await this.lecturerService.findOne(lecturerId);
+
+    reviewBoard.lecturers.push(lecturer);
+
+    return this.reviewBoardRepo.save(reviewBoard);
   }
 
   update(id: number, updateReviewBoardDto: UpdateReviewBoardDto) {
