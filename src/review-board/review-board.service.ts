@@ -17,18 +17,25 @@ export class ReviewBoardService {
   async create(createReviewBoardDto: CreateReviewBoardDto) {
     const reviewBoardEntity = {
       ...createReviewBoardDto,
-      lecturers: await Promise.all(
-        createReviewBoardDto.lecturerIds.map((id) =>
-          this.lecturerService.findOne(id),
-        ),
-      ),
+      lecturers: createReviewBoardDto.lecturerIds.map((id) => ({ id })),
     };
 
     return this.reviewBoardRepo.save(reviewBoardEntity);
   }
 
   findAll() {
-    return `This action returns all reviewBoard`;
+    return this.reviewBoardRepo.find({
+      where: {},
+      relations: {
+        lecturers: true,
+        reviewResults: {
+          testScoreReviewForm: {
+            student: true,
+            testScore: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: string) {
@@ -45,7 +52,12 @@ export class ReviewBoardService {
   async addLecturer(reviewBoardId: string, lecturerId: string) {
     const reviewBoard = await this.reviewBoardRepo.findOne({
       where: { id: reviewBoardId },
-      relations: { lecturers: true },
+      relations: {
+        lecturers: true,
+        reviewResults: {
+          testScoreReviewForm: true,
+        },
+      },
     });
 
     const lecturer = await this.lecturerService.findOne(lecturerId);
@@ -55,11 +67,28 @@ export class ReviewBoardService {
     return this.reviewBoardRepo.save(reviewBoard);
   }
 
-  update(id: number, updateReviewBoardDto: UpdateReviewBoardDto) {
-    return `This action update a #${id} reviewBoard`;
+  async update(id: string, updateReviewBoardDto: UpdateReviewBoardDto) {
+    const reviewBoard = await this.reviewBoardRepo.findOne({
+      where: { id },
+      relations: { lecturers: true },
+    });
+    Object.assign(reviewBoard, updateReviewBoardDto);
+
+    return this.reviewBoardRepo.save({
+      ...reviewBoard,
+      lecturers:
+        (updateReviewBoardDto.lecturerIds?.length || 0) !== 0
+          ? updateReviewBoardDto.lecturerIds.map((id) => ({
+              id,
+            }))
+          : reviewBoard.lecturers,
+      reviewResults: updateReviewBoardDto.scoreReviewIds.map((id) => ({
+        testScoreReviewForm: { id },
+      })),
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reviewBoard`;
+  remove(id: string) {
+    return this.reviewBoardRepo.delete(id);
   }
 }

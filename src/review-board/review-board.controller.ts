@@ -47,11 +47,11 @@ export class ReviewBoardController {
     @Param('id') id: string,
     @Body() updateReviewBoardDto: UpdateReviewBoardDto,
   ) {
-    return this.reviewBoardService.update(+id, updateReviewBoardDto);
+    return this.reviewBoardService.update(id, updateReviewBoardDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.reviewBoardService.remove(+id);
+    return this.reviewBoardService.remove(id);
   }
 }

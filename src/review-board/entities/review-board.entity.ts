@@ -1,9 +1,11 @@
 import { LecturerEntity } from 'src/lecturer/entities/lecturer.entity';
+import { ReviewResultEntity } from 'src/review-results/entities/review-result.entity';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,4 +20,11 @@ export class ReviewBoardEntity {
   @ManyToMany(() => LecturerEntity)
   @JoinTable()
   lecturers: LecturerEntity[];
+
+  @OneToMany(
+    () => ReviewResultEntity,
+    (reviewResult) => reviewResult.reviewBoard,
+    { cascade: true },
+  )
+  reviewResults: ReviewResultEntity[];
 }

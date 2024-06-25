@@ -2,9 +2,7 @@ import { ReviewBoardEntity } from 'src/review-board/entities/review-board.entity
 import { TestScoreReviewFormEntity } from 'src/test-score-review-form/entities/test-score-review-form.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
