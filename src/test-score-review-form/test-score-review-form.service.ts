@@ -37,6 +37,7 @@ export class TestScoreReviewFormService {
       },
       relations: {
         testScore: true,
+        student: true,
       },
       order: {
         ngayDangKy: 'ASC',

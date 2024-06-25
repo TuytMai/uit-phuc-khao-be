@@ -1,11 +1,10 @@
 import { StudentEntity } from 'src/student/entities/student.entity';
-import { TestScoreEntity } from 'src/test-score/entities/test-score.entity';
+import { TestScoreReviewFormEntity } from 'src/test-score-review-form/entities/test-score-review-form.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,8 +28,10 @@ export class ComplaintFormEntity {
   @ManyToOne(() => StudentEntity)
   student: StudentEntity;
 
-  @OneToOne(() => TestScoreEntity)
-  testScoreEntity: TestScoreEntity;
+  // @OneToOne(() => TestScoreEntity)
+  // testScoreEntity: TestScoreEntity;
+  @ManyToOne(() => TestScoreReviewFormEntity)
+  reviewForm: TestScoreReviewFormEntity;
 }
 
 export type EComplaintStatus = 'DA_GUI' | 'TU_CHOI' | 'DANG_XU_LI' | 'DA_XU_LI';

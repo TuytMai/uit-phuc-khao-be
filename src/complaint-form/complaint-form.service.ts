@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateComplaintFormDto } from './dto/create-complaint-form.dto';
 import { UpdateComplaintFormDto } from './dto/update-complaint-form.dto';
-import { In, Repository } from 'typeorm';
 import { ComplaintFormEntity } from './entities/complaint-form.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ComplaintFormService {
@@ -12,8 +12,15 @@ export class ComplaintFormService {
     private readonly complaintFormRepo: Repository<ComplaintFormEntity>,
   ) {}
 
-  create(createComplaintFormDto: CreateComplaintFormDto) {
-    return this.complaintFormRepo.save(createComplaintFormDto);
+  create(createComplaintFormDto: CreateComplaintFormDto, studentId: string) {
+    return this.complaintFormRepo.save({
+      ...createComplaintFormDto,
+      student: { id: studentId },
+      tinhTrang: 'DA_GUI',
+      reviewForm: {
+        id: createComplaintFormDto.reviewFormId,
+      },
+    });
   }
 
   findAll() {
@@ -25,6 +32,13 @@ export class ComplaintFormService {
       where: {
         student: {
           id: studentId,
+        },
+      },
+      relations: {
+        student: true,
+        reviewForm: {
+          student: true,
+          testScore: true,
         },
       },
       order: {

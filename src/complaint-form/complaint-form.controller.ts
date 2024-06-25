@@ -1,28 +1,36 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Request,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtStudentAuthGuard } from 'src/auth/guards/jwt-student-auth.guard';
+import { JwtTrainingDepartmentAuthGuard } from 'src/auth/guards/jwt-training-department-auth.guard';
+import { AuthenticatedStudentRequest } from 'src/auth/types/authenticated-student-request';
+import { AuthenticatedTrainingDepartmentRequest } from 'src/auth/types/authenticated-training-department-request';
 import { ComplaintFormService } from './complaint-form.service';
 import { CreateComplaintFormDto } from './dto/create-complaint-form.dto';
 import { UpdateComplaintFormDto } from './dto/update-complaint-form.dto';
-import { JwtTrainingDepartmentAuthGuard } from 'src/auth/guards/jwt-training-department-auth.guard';
-import { JwtTrainingDepartmentStrategy } from 'src/auth/strategies/jwt-training-department.strategy';
-import { AuthenticatedTrainingDepartmentRequest } from 'src/auth/types/authenticated-training-department-request';
 
 @Controller('complaint-form')
 export class ComplaintFormController {
   constructor(private readonly complaintFormService: ComplaintFormService) {}
 
   @Post()
-  create(@Body() createComplaintFormDto: CreateComplaintFormDto) {
-    return this.complaintFormService.create(createComplaintFormDto);
+  @UseGuards(JwtStudentAuthGuard)
+  create(
+    @Body() createComplaintFormDto: CreateComplaintFormDto,
+    @Request() request: AuthenticatedStudentRequest,
+  ) {
+    return this.complaintFormService.create(
+      createComplaintFormDto,
+      request.user.id,
+    );
   }
 
   @Get('unresolved')
