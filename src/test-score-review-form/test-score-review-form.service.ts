@@ -161,7 +161,7 @@ export class TestScoreReviewFormService {
         giaiTrinh: updateTestScoreReviewFormDto.giaiTrinh,
         diemPhucKhao: updateTestScoreReviewFormDto.diemPhucKhao,
         reviewBoard: {
-          id: testScoreReviewForm.reviewResult.reviewBoard.id,
+          id: testScoreReviewForm.reviewResult?.reviewBoard?.id,
         },
       },
     });
