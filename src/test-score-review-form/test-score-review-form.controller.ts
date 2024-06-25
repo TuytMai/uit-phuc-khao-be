@@ -24,8 +24,15 @@ export class TestScoreReviewFormController {
   ) {}
 
   @Post()
-  create(@Body() createTestScoreReviewFormDto: CreateTestScoreReviewFormDto) {
-    return this.testScoreReviewFormService.create(createTestScoreReviewFormDto);
+  @UseGuards(JwtStudentAuthGuard)
+  create(
+    @Body() createTestScoreReviewFormDto: CreateTestScoreReviewFormDto,
+    @Request() request: AuthenticatedStudentRequest,
+  ) {
+    return this.testScoreReviewFormService.create(
+      createTestScoreReviewFormDto,
+      request.user.id,
+    );
   }
 
   @Get()

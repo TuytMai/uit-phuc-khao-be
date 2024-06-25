@@ -18,7 +18,7 @@ export class TestScoreReviewFormEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   maLop: string;
 
   @Column({ type: 'timestamp', nullable: false })
@@ -42,7 +42,7 @@ export class TestScoreReviewFormEntity {
   @CreateDateColumn()
   ngayDangKy: Date;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   nguoiPhucKhao: string;
 
   @OneToOne(
@@ -55,7 +55,8 @@ export class TestScoreReviewFormEntity {
   @ManyToOne(() => StudentEntity)
   student: StudentEntity;
 
-  @OneToOne(() => TestScoreEntity)
+  @ManyToOne(() => TestScoreEntity)
+  @JoinColumn({ name: 'test_score_id' })
   testScore: TestScoreEntity;
 
   @ManyToOne(() => TrainningDepartmentEntity)

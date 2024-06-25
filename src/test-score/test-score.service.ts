@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTestScoreDto } from './dto/create-test-score.dto';
 import { UpdateTestScoreDto } from './dto/update-test-score.dto';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TestScoreEntity } from './entities/test-score.entity';
 
 @Injectable()
@@ -12,17 +12,26 @@ export class TestScoreService {
     private readonly testScoreRepo: Repository<TestScoreEntity>,
   ) {}
 
-  create(createTestScoreDto: CreateTestScoreDto) {
-    return this.testScoreRepo.save(createTestScoreDto);
+  create(createTestScoreDto: CreateTestScoreDto, studentId: string) {
+    return this.testScoreRepo.save({
+      ...createTestScoreDto,
+      student: { id: studentId },
+    });
   }
 
   findAll() {
-    return `This action returns all testScore`;
+    return this.testScoreRepo.findBy({});
   }
 
   findOne(id: string) {
     return this.testScoreRepo.findOneBy({
       id: id,
+    });
+  }
+
+  findByStudentId(id: string) {
+    return this.testScoreRepo.findBy({
+      student: { id },
     });
   }
 
