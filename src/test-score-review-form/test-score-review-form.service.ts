@@ -41,6 +41,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -58,6 +59,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -76,6 +78,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -91,6 +94,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -106,6 +110,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -121,6 +126,7 @@ export class TestScoreReviewFormService {
       relations: {
         testScore: true,
         student: true,
+        reviewResult: true,
       },
       order: {
         ngayDangKy: 'ASC',
@@ -142,13 +148,23 @@ export class TestScoreReviewFormService {
     id: string,
     updateTestScoreReviewFormDto: UpdateTestScoreReviewFormDto,
   ) {
-    const testScoreReviewForm = await this.testScoreReviewFormRepo.findOneBy({
-      id,
+    const testScoreReviewForm = await this.testScoreReviewFormRepo.findOne({
+      where: { id },
+      relations: { reviewResult: { reviewBoard: true } },
     });
 
     Object.assign(testScoreReviewForm, updateTestScoreReviewFormDto);
 
-    return this.testScoreReviewFormRepo.save(testScoreReviewForm);
+    return this.testScoreReviewFormRepo.save({
+      ...testScoreReviewForm,
+      reviewResult: {
+        giaiTrinh: updateTestScoreReviewFormDto.giaiTrinh,
+        diemPhucKhao: updateTestScoreReviewFormDto.diemPhucKhao,
+        reviewBoard: {
+          id: testScoreReviewForm.reviewResult.reviewBoard.id,
+        },
+      },
+    });
   }
 
   async findByReviewBoard(reviewBoardId: string) {

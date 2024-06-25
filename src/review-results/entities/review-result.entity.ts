@@ -3,6 +3,7 @@ import { TestScoreReviewFormEntity } from 'src/test-score-review-form/entities/t
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,7 @@ export class ReviewResultEntity {
     () => TestScoreReviewFormEntity,
     (testScore) => testScore.reviewResult,
   )
+  @JoinColumn({ name: 'test_score_review_form_id' })
   testScoreReviewForm: TestScoreReviewFormEntity;
 
   @ManyToOne(() => ReviewBoardEntity)

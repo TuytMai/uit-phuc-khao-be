@@ -8,7 +8,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -48,6 +47,7 @@ export class TestScoreReviewFormEntity {
   @OneToOne(
     () => ReviewResultEntity,
     (reviewResult) => reviewResult.testScoreReviewForm,
+    { cascade: true },
   )
   @JoinColumn({ name: 'review_result_id' })
   reviewResult: ReviewResultEntity;

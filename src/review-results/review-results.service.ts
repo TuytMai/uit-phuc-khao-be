@@ -1,19 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateReviewResultDto } from './dto/create-review-result.dto';
 import { UpdateReviewResultDto } from './dto/update-review-result.dto';
-import { Repository } from 'typeorm';
-import { ReviewBoardEntity } from 'src/review-board/entities/review-board.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ReviewResultEntity } from './entities/review-result.entity';
 
 @Injectable()
 export class ReviewResultsService {
   constructor(
     @InjectRepository(ReviewResultEntity)
-    private readonly reviewResultrepo: Repository<ReviewResultEntity>) {}
+    private readonly reviewResultrepo: Repository<ReviewResultEntity>,
+  ) {}
 
   create(createReviewResultDto: CreateReviewResultDto) {
-    return this.reviewResultrepo.save(createReviewResultDto);
+    return this.reviewResultrepo.save({
+      ...createReviewResultDto,
+      testScoreReviewForm: {
+        id: createReviewResultDto.testScoreReviewFormId,
+      },
+    });
   }
 
   findAll() {

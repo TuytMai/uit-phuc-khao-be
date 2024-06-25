@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ReviewResultsService } from './review-results.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateReviewResultDto } from './dto/create-review-result.dto';
 import { UpdateReviewResultDto } from './dto/update-review-result.dto';
+import { ReviewResultsService } from './review-results.service';
 
 @Controller('review-results')
 export class ReviewResultsController {
@@ -23,7 +31,10 @@ export class ReviewResultsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewResultDto: UpdateReviewResultDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateReviewResultDto: UpdateReviewResultDto,
+  ) {
     return this.reviewResultsService.update(+id, updateReviewResultDto);
   }
 
