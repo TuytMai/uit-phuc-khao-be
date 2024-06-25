@@ -1,3 +1,4 @@
+import { ReviewResultEntity } from 'src/review-results/entities/review-result.entity';
 import { StudentEntity } from 'src/student/entities/student.entity';
 import { TestScoreEntity } from 'src/test-score/entities/test-score.entity';
 import { TrainningDepartmentEntity } from 'src/trainning-department/entities/trainning-department.entity';
@@ -7,6 +8,8 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -41,6 +44,13 @@ export class TestScoreReviewFormEntity {
 
   @Column({ type: 'varchar', nullable: true })
   nguoiPhucKhao: string;
+
+  @OneToOne(
+    () => ReviewResultEntity,
+    (reviewResult) => reviewResult.testScoreReviewForm,
+  )
+  @JoinColumn({ name: 'review_result_id' })
+  reviewResult: ReviewResultEntity;
 
   @ManyToOne(() => StudentEntity)
   student: StudentEntity;
