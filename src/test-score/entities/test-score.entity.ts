@@ -6,7 +6,7 @@ export class TestScoreEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', nullable: false, unique: true })
+  @Column({ type: 'varchar', nullable: false })
   maMon: string;
 
   @Column({ type: 'varchar', nullable: false })
