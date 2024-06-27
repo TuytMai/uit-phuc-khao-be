@@ -24,6 +24,7 @@ export class ReviewResultEntity {
   @OneToOne(
     () => TestScoreReviewFormEntity,
     (testScore) => testScore.reviewResult,
+    { cascade: true },
   )
   @JoinColumn({ name: 'test_score_review_form_id' })
   testScoreReviewForm: TestScoreReviewFormEntity;

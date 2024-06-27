@@ -12,7 +12,6 @@ import {
 import { JwtStudentAuthGuard } from 'src/auth/guards/jwt-student-auth.guard';
 import { JwtTrainingDepartmentAuthGuard } from 'src/auth/guards/jwt-training-department-auth.guard';
 import { AuthenticatedStudentRequest } from 'src/auth/types/authenticated-student-request';
-import { AuthenticatedTrainingDepartmentRequest } from 'src/auth/types/authenticated-training-department-request';
 import { ComplaintFormService } from './complaint-form.service';
 import { CreateComplaintFormDto } from './dto/create-complaint-form.dto';
 import { UpdateComplaintFormDto } from './dto/update-complaint-form.dto';
@@ -40,10 +39,8 @@ export class ComplaintFormController {
   }
 
   @Get('student')
-  @UseGuards(JwtTrainingDepartmentAuthGuard)
-  async findStudentForm(
-    @Request() request: AuthenticatedTrainingDepartmentRequest,
-  ) {
+  @UseGuards(JwtStudentAuthGuard)
+  async findStudentForm(@Request() request: AuthenticatedStudentRequest) {
     const student = request.user;
     const forms = await this.complaintFormService.findStudent(student.id);
     return forms;

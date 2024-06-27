@@ -85,11 +85,19 @@ export class ReviewBoardService {
   async update(id: string, updateReviewBoardDto: UpdateReviewBoardDto) {
     const reviewBoard = await this.reviewBoardRepo.findOne({
       where: { id },
-      relations: { lecturers: true },
+      relations: { lecturers: true, reviewResults: true },
     });
     Object.assign(reviewBoard, updateReviewBoardDto);
 
-    return this.reviewBoardRepo.save({
+    await this.reviewBoardRepo.save({
+      ...reviewBoard,
+      reviewResults: reviewBoard.reviewResults.map((d) => ({
+        ...d,
+        testScoreReviewForm: null,
+      })),
+    });
+
+    return await this.reviewBoardRepo.save({
       ...reviewBoard,
       lecturers:
         (updateReviewBoardDto.lecturerIds?.length || 0) !== 0
